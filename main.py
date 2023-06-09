@@ -15,6 +15,13 @@ OPENAI_API_URL = 'https://api.openai.com/v1/engines/davinci/v1/assistant/complet
 SAMPLE_RATE = 16000
 DURATION = 5
 
+    # Speakers a usar 
+    # 13 para hombre voz profunda
+    # 14 para la mujer
+    # 2 mujer por defecto
+    # 22 susurro
+SPEAKER = 13
+
 # Inicio del programa #
 
 def inicio_proceso():
@@ -22,7 +29,7 @@ def inicio_proceso():
     print("Se ha iniciado el programa de traducción.")
 
     audio = capturar_audio()
-    transcriptions = transcribe_audio(audio)
+    transcriptions = transcribir_audio(audio)
 
     if transcriptions:
         print("Transcripciones:")
@@ -37,10 +44,10 @@ def capturar_audio():
     sd.wait()
 
     print("Audio capturado.")
-    write('/grabacion/output.wav', SAMPLE_RATE, audio)
+    write('.\\grabacion\\output.wav', SAMPLE_RATE, audio)
     return audio.flatten()
 
-def transcribe_audio(audio):
+def transcribir_audio(audio):
     print("Enviando audio para transcripción...")
 
     # Convertir el audio a formato de 16 bits y little-endian
