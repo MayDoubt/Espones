@@ -30,15 +30,15 @@ def main():
         if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
             print('Micrófono', i, " - ", p.get_device_info_by_host_api_device_index(0, i)['name'])
     
-    mixer.init() # Initialize the mixer, this will allow the next command to work
-    print(sdl2_audio.get_audio_device_names(False)) # Returns playback devices, Boolean value determines whether they are Input or Output devices.
-    mixer.quit() # Quit the mixer as it's initialized on your main playback device
+    mixer.init() # Inicializar el mixer para poder capturar todos los dispositivios de salida
+    print(sdl2_audio.get_audio_device_names(False)) # Obtención de los nombres de los dispositivos de salida del ordenador
+    mixer.quit() # Cerrar el mixer para poder cambiarlo al dispositivo deseado
 
-    mixer.init(devicename = 'CABLE Input (VB-Audio Virtual Cable)') # Initialize it with the correct device
-    mixer.music.load("output_japones.wav") # Load the mp3
-    mixer.music.play() # Play it
+    mixer.init(devicename = 'CABLE Input (VB-Audio Virtual Cable)') # Inicio del micrófono que reproducirá el archivo de sonido sintetizado
+    mixer.music.load("output_japones.wav") # Carga del archivo
+    mixer.music.play() # Reproducción
 
-    while mixer.music.get_busy():  # wait for music to finish playing
+    while mixer.music.get_busy():  # Método que genera una espera en el dispositivo hasta que finalice
         time.sleep(1)
 
 if __name__ == '__main__':

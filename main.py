@@ -1,8 +1,11 @@
 import keyboard
 import sounddevice as sd
+import pyaudio
 from scipy.io.wavfile import write
-#import json
-#import numpy
+
+import pygame._sdl2.audio as sdl2_audio
+from pygame import mixer
+import time
 
 import openai
 import whisper
@@ -35,6 +38,7 @@ def inicio_proceso():
     texto_ingles = transcribir_audio_y_traducir_ingles(audio)
     texto_japones = traduccion_japones(texto_ingles)
     sintetizado_texto_japones(texto_japones)
+    salida_archivo_sintetizado()
 
 
 def capturar_audio():
@@ -125,7 +129,29 @@ def sintetizado_texto_japones(texto):
         video_stream = response_audio_japones.content
         vid.write(video_stream)
 
+def salida_archivo_sintetizado():
+
+    #Código para la comprobación en el equipo de los dispositivos de captura de sonido
+    #p = pyaudio.PyAudio()
+    #info = p.get_host_api_info_by_index(0)
+    #numdevices = info.get('deviceCount')
+    #for i in range(0, numdevices):
+    #    if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+    #        print('Micrófono', i, " - ", p.get_device_info_by_host_api_device_index(0, i)['name'])
+
+    mixer.init() # Inicializar el mixer para poder capturar todos los dispositivios de salida
+    #print(sdl2_audio.get_audio_device_names(False)) # Obtención de los nombres de los dispositivos de salida del ordenador
+    mixer.quit() # Cerrar el mixer para poder cambiarlo al dispositivo deseado
+
+    mixer.init(devicename = 'CABLE Input (VB-Audio Virtual Cable)') # Inicio del micrófono que reproducirá el archivo de sonido sintetizado
+    mixer.music.load("output_japones.wav") # Carga del archivo
+    mixer.music.play() # Reproducción
+
+    while mixer.music.get_busy():  # Método que genera una espera en el dispositivo hasta que finalice
+        time.sleep(1)
+
 def main():
+
     # Evento para que se ejecute el proceso
     keyboard.add_hotkey('º', inicio_proceso)
 
