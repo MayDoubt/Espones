@@ -1,6 +1,5 @@
 import keyboard
 import sounddevice as sd
-import pyaudio
 from scipy.io.wavfile import write
 
 import pygame._sdl2.audio as sdl2_audio
@@ -15,13 +14,15 @@ import requests
 
     # Configuración del servicio de reconocimiento de voz de OpenAI
 OPENAI_API_KEY = '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'
-OPENAI_API_URL = 'https://api.openai.com/v1/engines/davinci/v1/assistant/completions'
 
-    # Configuración de la captura de audio
+    # Configuración de la captura de audio para transcripción
 SAMPLE_RATE = 16000
 DURATION = 5
 
-    # Speakers a usar 
+    # Configuración del micrófono para la salida del audio sintetizado
+MICROFONO_VIRTUAL = 'CABLE Input (VB-Audio Virtual Cable)'
+
+    # Personaje (Speaker) a usar
     # 13 para hombre voz profunda
     # 14 para la mujer
     # 2 mujer por defecto
@@ -143,7 +144,7 @@ def salida_archivo_sintetizado():
     #print(sdl2_audio.get_audio_device_names(False)) # Obtención de los nombres de los dispositivos de salida del ordenador
     mixer.quit() # Cerrar el mixer para poder cambiarlo al dispositivo deseado
 
-    mixer.init(devicename = 'CABLE Input (VB-Audio Virtual Cable)') # Inicio del micrófono que reproducirá el archivo de sonido sintetizado
+    mixer.init(devicename = MICROFONO_VIRTUAL) # Inicio del micrófono que reproducirá el archivo de sonido sintetizado
     mixer.music.load("output_japones.wav") # Carga del archivo
     mixer.music.play() # Reproducción
 
