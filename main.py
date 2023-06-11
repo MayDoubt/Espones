@@ -120,8 +120,10 @@ def sintetizado_texto_japones(texto):
     response_json = requests.post(endpoint_json)
     response_audio_japones = requests.post(endpoint_audio_japones, json = response_json.json())
     
-    # Guardado de audio generado
-    write('output_japones.wav', response_audio_japones)
+    # Guardado de audio generado en la respuesta
+    with open("output_japones.wav", "wb") as vid:
+        video_stream = response_audio_japones.content
+        vid.write(video_stream)
 
 def main():
     # Evento para que se ejecute el proceso
